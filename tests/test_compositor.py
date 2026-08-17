@@ -236,6 +236,52 @@ def test_synthetic_south_tile_lands_below_north_tile() -> None:
 
 
 # ---------------------------------------------------------------------------
+# 2c. Real echo content check: a real RadarGrid tile with genuine visible
+# rain (see tests/fixtures/README.md), composited alone at 2x scale, must
+# actually deposit its own echo pixels at the anchor §4.1 predicts - not just
+# a column number. Fills the gap AGENTS.md deferred: the only other real
+# radar fixture (radar_tile_z7_x65_y80_no_echo.png) had no echo at capture
+# time, so the radar draw path was never content-checked before this.
+# ---------------------------------------------------------------------------
+
+
+def test_real_radar_echo_tile_lands_at_its_2x_scaled_position() -> None:
+    """Real echo tile (64, 80) composites, at 2x scale, onto its predicted anchor."""
+    radar_png = load_fixture("radar_tile_z7_x64_y80_with_echo.png")
+    radar_span = TILE_SIZE * 2
+
+    frame = compose_frame(base_tiles={}, radar_tiles={(64, 80): radar_png})
+
+    dx, y_pillow = _expected_pillow_position(64, 80, radar_span, radar=True)
+    canvas_top, canvas_bottom, tile_top, tile_bottom = _visible_slice(
+        y_pillow, radar_span, CH
+    )
+
+    # _paste_tile resizes the 256x256 source to the 512x512 radar span before
+    # blending (compositor.py's own resize call, reproduced here rather than
+    # skipped, since a resize is the one step this fixture's assertion cannot
+    # bypass without silently comparing the wrong pixels).
+    resized = (
+        Image.open(io.BytesIO(radar_png))
+        .convert("RGBA")
+        .resize((radar_span, radar_span))
+    )
+    resized_bytes = io.BytesIO()
+    resized.save(resized_bytes, format="PNG")
+    expected_full = _blend_on_black(resized_bytes.getvalue())
+    expected_visible = expected_full.crop((0, tile_top, radar_span, tile_bottom))
+    actual_visible = frame.crop((dx, canvas_top, dx + radar_span, canvas_bottom))
+    assert actual_visible.tobytes() == expected_visible.tobytes()
+
+    # Guard against the byte-equality check above passing on a degenerate
+    # all-black comparison: real echo pixels (blue/cyan/green/orange cluster
+    # plus scattered noise dots, see tests/fixtures/README.md) must actually
+    # have landed on the canvas, not just an empty/transparent tile.
+    non_black = sum(1 for pixel in actual_visible.getdata() if pixel != (0, 0, 0))
+    assert non_black > 100
+
+
+# ---------------------------------------------------------------------------
 # Missing tiles are tolerated, never an error (docs/04-architecture.md §4.2)
 # ---------------------------------------------------------------------------
 
