@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "RadarCat",
+        "description": "Configureu l'animació del radar meteorològic de Meteocat per a Catalunya. No cal cap configuració."
+      }
+    },
+    "abort": {
+      "already_configured": "RadarCat ja està configurat. Només es permet una instància."
+    },
+    "error": {
+      "cannot_connect": "No s'ha pogut connectar amb Meteocat. Comproveu la connexió i torneu-ho a provar."
+    }
+  },
+  "entity": {
+    "image": {
+      "radar": {
+        "name": "Radar"
+      }
+    }
+  }
+}

@@ -5,9 +5,21 @@ release, architecture, and sharp-edge notes that should travel with the code.
 
 ## State of the repository
 
-Scaffold only. Boilerplate (CI, release-please, HACS metadata, licence, lint config) is copied
-and adapted from the sibling repos below. No `docs/` design contract and no
-`custom_components/radarcat` code beyond `manifest.json` exist yet.
+Design docs (`docs/01` to `05`) are done and reviewed. T1 Foundation is landed and reviewed
+clean: `const.py` (the binding contract every later module imports), `strings.json` +
+`translations/{ca,es,en}.json`, `tests/conftest.py`, real captured fixtures under
+`tests/fixtures/` (two tiles + the metadata JSON, all md5-verified copies of
+`docs/captures/`), `tests/test_const.py`. T2 (`api.py` + `compositor.py`, the unit with real
+geometric risk) is next, solo before T3/T4 fan out against its reviewed contract (see
+`docs/05-implementation-plan.md` "Onades").
+
+**Adjudicated deviation**: T1 wrote `strings.json`/translations with their *final* content
+(title, `cannot_connect` error text, entity name) instead of the empty skeleton
+`05-implementation-plan.md` originally asked for. Accepted, not reverted: `03-feature-spec.md`
+§3 and `04-architecture.md` §8 already fully determine that wording (single `cannot_connect`
+error, zero config fields), so there was no real ambiguity left for T4 to resolve. T4 still
+owns re-verifying the two shared keys (`error.cannot_connect`, `entity.image.radar`) actually
+match what `config_flow.py`/`image.py` end up using, not just leaving this file untouched.
 
 ## Sibling repositories
 

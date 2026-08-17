@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "RadarCat",
+        "description": "Set up the Meteocat weather radar animation for Catalonia. No configuration is needed."
+      }
+    },
+    "abort": {
+      "already_configured": "RadarCat is already configured. Only one instance is allowed."
+    },
+    "error": {
+      "cannot_connect": "Could not connect to Meteocat. Check your connection and try again."
+    }
+  },
+  "entity": {
+    "image": {
+      "radar": {
+        "name": "Radar"
+      }
+    }
+  }
+}

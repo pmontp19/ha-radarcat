@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "RadarCat",
+        "description": "Configura la animación del radar meteorológico de Meteocat para Cataluña. No es necesaria ninguna configuración."
+      }
+    },
+    "abort": {
+      "already_configured": "RadarCat ya está configurado. Solo se permite una instancia."
+    },
+    "error": {
+      "cannot_connect": "No se ha podido conectar con Meteocat. Comprueba la conexión e inténtalo de nuevo."
+    }
+  },
+  "entity": {
+    "image": {
+      "radar": {
+        "name": "Radar"
+      }
+    }
+  }
+}
