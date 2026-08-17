@@ -39,7 +39,40 @@ real echo tile opportunistically next time it's actually raining over the sample
 than chasing it now.
 
 T3 (`coordinator.py`+`__init__.py`) and T4 (`image.py`/`entity.py`/`config_flow.py`/
-`diagnostics.py`) are next, in parallel, against T2's now-real (not paper) contract.
+`diagnostics.py`+translations verification) are landed and reviewed clean, built in parallel
+against T2's real contract with no file-scope collisions. Full suite: 82 tests, 100% coverage.
+
+Two Required findings fixed after adversarial review, both independently re-verified before
+being dispatched as fixes:
+- T3: a metadata-fetch outage longer than one `SCAN_INTERVAL_MIN` cycle left the frame window
+  non-contiguous (one big gap, self-healing over ~1h) instead of rebuilding cleanly.
+  `_async_update_data` now rebuilds the full window from scratch whenever the gap since the
+  newest cached frame isn't exactly one `FRAME_INTERVAL_MIN` - same "second cold start"
+  treatment, no partial splicing. Regression-proven: the worker reverted the fix, confirmed the
+  new test fails, then restored it.
+- T4: `RadarcatImage` never seeded `image_last_updated` at construction, so the entity read
+  `unknown` for up to a full poll cycle after every setup even though `async_image()` already
+  served a correct WEBP (`BaseCoordinatorEntity.async_added_to_hass` only registers the
+  coordinator listener, it never replays `_handle_coordinator_update` for the refresh that
+  already happened via `async_config_entry_first_refresh()`). Fixed with a shared
+  `_sync_image_last_updated()` called from both `__init__` (cold start) and
+  `_handle_coordinator_update` (steady state).
+- T4 also added `consecutive_failures`/`last_error` to `diagnostics.py` (already tracked by
+  `coordinator.py` for exactly this, previously unread by anything).
+
+**Deferred, accepted gaps** (both low-severity, not blocking the MVP):
+- No real Meteocat radar tile with visible rain echo exists as a fixture, so the 2x-scale radar
+  anchor is only column-position-checked, not content-checked, in `test_compositor.py`. Capture
+  one opportunistically when it's actually raining over the sampled tile; do not fabricate one.
+- `coordinator.py`'s `consecutive_failures`/`last_error` only update on a metadata-fetch
+  failure, not on a failure during tile-fetch/compose/encode (those still correctly flip
+  `last_update_success` via HA's own machinery - only this integration's own diagnostics
+  counters would lag). Needs a considered exception boundary to fix well, not a quick broad
+  `except`; revisit in v0.2.0 rather than rushing it into the MVP.
+
+Next: Integration (docs/06-quality-scale.md + quality_scale.yaml against the real code, any
+loose seams) and the manager's personal verification against a real running Home Assistant
+instance.
 
 ## Sibling repositories
 
