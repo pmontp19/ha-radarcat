@@ -70,9 +70,26 @@ being dispatched as fixes:
   counters would lag). Needs a considered exception boundary to fix well, not a quick broad
   `except`; revisit in v0.2.0 rather than rushing it into the MVP.
 
-Next: Integration (docs/06-quality-scale.md + quality_scale.yaml against the real code, any
-loose seams) and the manager's personal verification against a real running Home Assistant
-instance.
+**v0.1.0 MVP is done and personally verified**: booted a real `hass` instance (the test
+harness's `async_test_home_assistant`, not a hand-rolled bootstrap), drove the actual config
+flow end to end, and confirmed the coordinator composed a real 10-frame, 691x653 animated WEBP
+against LIVE Meteocat data (real convective storms over Catalonia on 2026-08-17), with correct
+orientation and a correctly-seeded `image_last_updated` from the very first state (the T4 fix
+holds in practice, not only in tests). `docs/06-quality-scale.md` + `quality_scale.yaml` record
+28 done / 7 todo / 19 exempt against the real code, not copied from the siblings.
+
+**v0.2.0 backlog** (not started): `brands` (no `brand/icon.png` yet), `parallel_updates`,
+`docs_troubleshooting`, `exception_translations`, `icon_translations`, `repair_issues`,
+`strict_typing` - plus the rain-severity sensors and user location described in
+`docs/03-feature-spec.md` §7's non-goals.
+
+**Gotcha for any future ad-hoc verification script outside pytest**: `pytest_homeassistant_
+custom_component`'s own `testing_config/custom_components/` has an `__init__.py` (a real
+package, not a namespace one) - whichever `custom_components` gets imported FIRST in the
+process wins the `sys.modules` cache for good, so a bare script must
+`import custom_components.radarcat` before importing anything from that plugin, or HA's loader
+will never find this integration (`IntegrationNotFound`). Pytest itself never hits this because
+test files import `custom_components.radarcat.*` before the plugin needs to.
 
 ## Sibling repositories
 
