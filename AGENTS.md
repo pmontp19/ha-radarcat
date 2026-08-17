@@ -21,6 +21,26 @@ error, zero config fields), so there was no real ambiguity left for T4 to resolv
 owns re-verifying the two shared keys (`error.cannot_connect`, `entity.image.radar`) actually
 match what `config_flow.py`/`image.py` end up using, not just leaving this file untouched.
 
+T2 (`api.py`/`compositor.py`) is landed and reviewed clean, geometry independently re-derived
+by hand against `../radarcat/Sources/RadarCat/RadarCompositor.swift` twice (once per worker,
+once per reviewer) and cross-checked against a real frame from the actual running Swift app
+(`docs/captures/golden_reference_swift_dark_2026-08-17T14-27CEST.png`, produced via
+`Scripts/package_app.sh debug` there, not `compile_and_run.sh` which only builds release and
+never triggers the `#if DEBUG` PNG dump). `docs/captures/base_tile_z8_x129_y159_south.png`/
+`_y161_north.png` are two more real fixtures (mountain vs. sea+badge, same x, different y) used
+specifically to anchor `test_compositor.py`'s geometry tests to independently-checkable real
+geography instead of only a formula agreeing with itself.
+
+**Deferred, accepted gap**: no real Meteocat radar tile with visible rain echo exists as a
+fixture (the one radar tile captured, `radar_tile_z7_x65_y80_no_echo.png`, happened to have
+none at capture time). The 2x-scale radar anchor is therefore only column-position-checked, not
+content-checked, in `test_compositor.py`. Not fabricating one (evidence discipline). Capture a
+real echo tile opportunistically next time it's actually raining over the sampled tile, rather
+than chasing it now.
+
+T3 (`coordinator.py`+`__init__.py`) and T4 (`image.py`/`entity.py`/`config_flow.py`/
+`diagnostics.py`) are next, in parallel, against T2's now-real (not paper) contract.
+
 ## Sibling repositories
 
 Three prior Home Assistant integrations by the same author, for Catalan public data sources,
