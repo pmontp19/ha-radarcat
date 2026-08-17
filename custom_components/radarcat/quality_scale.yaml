@@ -1,0 +1,117 @@
+rules:
+  # ─── 🥉 Bronze ────────────────────────────────────────────────────────────
+  # Status verified against the real T1-T4 codebase (83 tests passing, 100%
+  # coverage on custom_components/radarcat) at Integration (T5), not copied
+  # from a sibling repo's verdicts.
+  action_setup:
+    status: exempt
+    comment: "No service actions exposed; the integration is a single passive image entity, nothing to trigger."
+  appropriate_polling: done
+  brands:
+    status: todo
+    comment: "custom_components/radarcat/brand/icon.png does not exist yet; not fabricated to fake this done."
+  common_modules: done
+  config_flow: done
+  config_flow_test_coverage: done
+  dependency_transparency: done
+  docs_actions:
+    status: exempt
+    comment: "No service actions to document (see action_setup)."
+  docs_conditions:
+    status: exempt
+    comment: "No custom Condition platform or entity attribute distinctive enough to need its own doc beyond HA core's generic image-entity docs."
+  docs_high_level_description: done
+  docs_installation_instructions: done
+  docs_removal_instructions: done
+  docs_triggers:
+    status: exempt
+    comment: "The integration fires no hass.bus events; there is nothing trigger-worthy to document."
+  entity_event_setup:
+    status: exempt
+    comment: "Does not subscribe to any entity's events; only listens to its own coordinator."
+  entity_unique_id: done
+  has_entity_name: done
+  runtime_data: done
+  test_before_configure: done
+  test_before_setup: done
+  unique_config_entry: done
+
+  # ─── 🥈 Silver ────────────────────────────────────────────────────────────
+  action_exceptions:
+    status: exempt
+    comment: "No service actions (see action_setup)."
+  config_entry_unloading: done
+  docs_configuration_parameters:
+    status: exempt
+    comment: "Zero config fields exist (docs/03-feature-spec.md §3); there is nothing to document."
+  docs_installation_parameters:
+    status: exempt
+    comment: "Same as docs_configuration_parameters: no parameters exist to reference."
+  entity_unavailable: done
+  integration_owner: done
+  log_when_unavailable: done
+  parallel_updates:
+    status: todo
+    comment: "No PARALLEL_UPDATES constant declared in image.py. The official rule has no exception for coordinator-driven platforms (PARALLEL_UPDATES = 0 must still be set explicitly); a one-line fix, not yet made."
+  reauthentication_flow:
+    status: exempt
+    comment: "The Meteocat widget is unauthenticated (no API key or session); there is nothing to re-authenticate."
+  test_coverage: done
+
+  # ─── 🥇 Gold ──────────────────────────────────────────────────────────────
+  devices: done
+  diagnostics: done
+  discovery:
+    status: exempt
+    comment: "Cloud-polling service (manifest iot_class), not a local network device to discover."
+  discovery_update_info:
+    status: exempt
+    comment: "No discovery flow exists (see discovery)."
+  docs_data_update: done
+  docs_examples: done
+  docs_known_limitations: done
+  docs_supported_devices:
+    status: exempt
+    comment: "The integration does not expose physical devices; it consumes a public web widget."
+  docs_supported_functions: done
+  docs_troubleshooting:
+    status: todo
+    comment: "No dedicated troubleshooting section written yet; deferred, no real support history to draw from."
+  docs_use_cases:
+    status: exempt
+    comment: "The sole entity is a display-only animated image with no state or attribute to build an automation around in v0.1.0; rain-severity sensors (the natural automation trigger) are deferred to v0.2.0."
+  dynamic_devices:
+    status: exempt
+    comment: "Single fixed service device per config entry; no add/remove device lifecycle."
+  entity_category:
+    status: exempt
+    comment: "No diagnostic/config entity exists in v0.1.0; the sole entity is the primary content the integration provides."
+  entity_device_class:
+    status: exempt
+    comment: "ImageEntity/ImageEntityDescription (homeassistant.components.image) define no device_class concept at all."
+  entity_disabled_by_default:
+    status: exempt
+    comment: "The sole entity is the primary content the integration exists to provide; disabling it by default would defeat the purpose, and no secondary/diagnostic entity exists yet."
+  entity_translations: done
+  exception_translations:
+    status: todo
+    comment: "No exceptions/ folder or translated exception strings exist yet."
+  icon_translations:
+    status: todo
+    comment: "No icons.json exists yet."
+  reconfiguration_flow:
+    status: exempt
+    comment: "Zero config fields exist; there is nothing to reconfigure."
+  repair_issues:
+    status: todo
+    comment: "No async_create_issue call exists anywhere in the codebase yet."
+  stale_devices:
+    status: exempt
+    comment: "No dynamic device lifecycle (see dynamic_devices)."
+
+  # ─── 🏆 Platinum ──────────────────────────────────────────────────────────
+  async_dependency: done
+  inject_websession: done
+  strict_typing:
+    status: todo
+    comment: "No mypy configuration exists in pyproject.toml or CI; strict typing has never been run against this codebase."
