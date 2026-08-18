@@ -57,7 +57,7 @@ excluded and bumped by hand instead; the exact list and the reason for each entr
 - Tile/metadata fixtures must be real captured Meteocat responses, never invented ones. The
   radarcat sibling project (`../radarcat`, the macOS app this integration ports the
   compositing logic from) already documents the exact tile grids and endpoints in its
-  `CLAUDE.md` and `RadarAPI.swift`/`RadarCompositor.swift`/`RadarGrid.swift` — read those
+  `CLAUDE.md` and `RadarAPI.swift`/`RadarCompositor.swift`/`RadarGrid.swift` - read those
   before re-deriving anything about the data source. Only test-only artefacts (trimmed
   tiles, hand-built malformed payloads) belong under `tests/fixtures/` with a `_SYNTHETIC`
   suffix and a `_comment` key.

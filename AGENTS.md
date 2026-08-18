@@ -94,14 +94,14 @@ test files import `custom_components.radarcat.*` before the plugin needs to.
 ## Sibling repositories
 
 Three prior Home Assistant integrations by the same author, for Catalan public data sources,
-set the quality bar and the process for this one — read them before inventing a different
+set the quality bar and the process for this one - read them before inventing a different
 shape:
 
 - `../ha-avisoscat` and `../ha-bomberscat`: finished, released examples (diagnostics, blueprint,
   quality_scale.yaml, full test suite). Copy their conventions for anything this file doesn't
   cover yet.
 - `../ha-cecat`: newest conventions (this file's own structure, the evidence-marking discipline
-  below), but the repo itself is mid-implementation — do not copy its *state*, only its *process*.
+  below), but the repo itself is mid-implementation - do not copy its *state*, only its *process*.
 
 The source project for the actual radar logic is `../radarcat`: a macOS menu-bar app that
 already fetches, composites and crops the same Meteocat radar tiles this integration serves,
