@@ -148,5 +148,23 @@ verificació (regla dura de `orchestrate`).
   per un desajust merament estètic, no funcional. No construir-ho sense una queixa real
   d'usuari primer.
 
+- **Controls de zoom: investigat (oracle Opus, 2026-08-18, navegador real + trànsit de xarxa
+  del propi giny de Meteocat) - descartat, no és un rebuig definitiu.** El giny oficial és
+  Leaflet amb `maxNativeZoom: 7` fixat explícitament a la capa de radar (trobat literalment al
+  seu JS): el radar mai fa cap petició per sobre de z=7, a cap nivell de zoom, ni tan sols al
+  topall del propi giny (z=10) - Leaflet només escala visualment el mateix tile de z=7
+  (confirmat visualment: l'eco surt borrós en apropar-se, mai més detallat). El mapa base sí
+  canvia de z de veritat (08->09->10), però sempre acompanyat d'un requadre proporcionalment
+  més petit - mai "mateix requadre, z més alt", que és exactament l'error que aquest projecte ja
+  va descobrir i evitar (z=9 fa les etiquetes més petites, no més nítides, veure
+  `01-data-sources.md` §3). Conclusió: un zoom de veritat és canviar la MIDA DEL REQUADRE (i
+  re-triar la z adequada per a aquell requadre), no exposar la z com a paràmetre - una funció
+  molt més gran que un simple toggle, i que contradiu els no-objectius explícits del MVP (zero
+  camps, zero targeta pròpia, `03-feature-spec.md` §3/§7). Cap drecera de dashboard tampoc:
+  `picture-entity`/`picture-glance` no tenen cap opció de retall/zoom pròpia. Si mai es
+  reconsidera: fer-ho com `radar`/`radar_actual` - entitats addicionals amb retalls fixos,
+  mesurats i verificats a mà un per un (p.ex. una zona metropolitana concreta), mai un paràmetre
+  genèric de zoom.
+
 - Blueprint d'automació de notificació de pluja.
 - Opcions de configuració (interval, nombre de frames).
