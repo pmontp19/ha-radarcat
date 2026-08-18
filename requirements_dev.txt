@@ -5,7 +5,7 @@
 #   uv pip install --python .venv/bin/python -r requirements_dev.txt
 #
 # The integration's own runtime requirement is Pillow (manifest.json:
-# requirements) — homeassistant already pulls it transitively, this pin
+# requirements) - homeassistant already pulls it transitively, this pin
 # just makes the version explicit for dev/CI too.
 
 pytest==9.0.0

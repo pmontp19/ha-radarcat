@@ -27,7 +27,7 @@ select = [
   "PL",   # pylint
 ]
 ignore = [
-  "PLR0913", # too many arguments — common in HA entity constructors
+  "PLR0913", # too many arguments - common in HA entity constructors
   "PLR2004", # magic value comparison
 ]
 

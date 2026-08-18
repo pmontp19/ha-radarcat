@@ -10,11 +10,15 @@ updates:
     schedule:
       interval: "weekly"
     ignore:
-      # Bumped manually alongside Home Assistant core releases — an
+      # Bumped manually alongside Home Assistant core releases - an
       # automated bump here would drift from what production HA runs.
       - dependency-name: "homeassistant"
       - dependency-name: "pytest-homeassistant-custom-component"
-      # Pinned exactly by pytest-homeassistant-custom-component itself —
+      # Pinned exactly by pytest-homeassistant-custom-component itself -
       # bumping either standalone makes uv's resolver fail.
       - dependency-name: "pytest"
       - dependency-name: "pytest-cov"
+      # Pinned exactly by homeassistant itself (==2026.2.3 depends on
+      # pillow==12.0.0) - bumping standalone makes uv's resolver fail with
+      # a real conflict, not a flaky CI issue (confirmed on PR #3, closed).
+      - dependency-name: "Pillow"
