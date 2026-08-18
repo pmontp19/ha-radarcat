@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "RadarCat",
-        "description": "Configura la animación del radar meteorológico de Meteocat para Cataluña. No es necesaria ninguna configuración."
+        "description": "La animación del radar meteorológico de Meteocat sobre Cataluña. No hace falta ningún parámetro: pulsa Enviar para añadirla."
       }
     },
     "abort": {

@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "RadarCat",
-        "description": "Set up the Meteocat weather radar animation for Catalonia. No configuration is needed."
+        "description": "The Meteocat weather radar animation over Catalonia. No parameters needed: press Submit to add it."
       }
     },
     "abort": {
