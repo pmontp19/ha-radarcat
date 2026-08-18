@@ -110,7 +110,43 @@ verificació (regla dura de `orchestrate`).
 
 ## Després de l'MVP (v0.2.0, no ara)
 
-- `binary_sensor`/`sensor` de severitat de pluja (port de `RainDetector.swift`), amb ubicació
-  d'usuari com als siblings (radi de seguiment/alerta).
+- `binary_sensor`/`sensor` de severitat de pluja (port de `RainDetector.swift`) - **decisió
+  revisada (oracle Opus, 2026-08-18)**: NO cal repetir el patró de selector de mapa dels
+  siblings (`avisoscat`/`bomberscat`). HA ja té una ubicació de casa
+  (`hass.config.latitude`/`longitude`/`elevation`), llegida directament per integracions reals
+  del core (`sun`, `zone`, i sobretot `met` - previsió meteorològica que fa exactament això amb
+  `track_home`). Únic camp de configuració necessari: el radi d'alerta. Cal:
+  - Guardar-se de la ubicació no configurada: `latitude == 0 and longitude == 0` (o
+    `config_source == ConfigSource.DEFAULT`) vol dir "sense configurar", com fa `met` mateix
+    (avortar/desactivar amb un missatge clar).
+  - Escoltar `EVENT_CORE_CONFIG_UPDATE` per reaccionar a un canvi de ubicació, però MAI llegir
+    coordenades del payload de l'event (no és un snapshot garantit) - sempre rellegir
+    `hass.config` de nou, igual que `sun`/`zone`/`met`.
+  - Documentar l'única limitació real: "casa" a HA és un punt estàtic, no la ubicació de
+    l'usuari en temps real (a diferència del CoreLocation de l'app macOS) - pot no coincidir amb
+    on realment viu qui fa servir la integració (segona residència, instància allotjada, llar
+    compartida).
+  - Marcador de la ubicació sobre la imatge composta: no fer-ho a v1 - el `map` card natiu de HA
+    ja dibuixa punt+radi contra `zone.home` sense cap codi d'imatge, i només val la pena si
+    algun dia cal mostrar-ho fora d'un dashboard (notificacions amb imatge fixa). Reconsiderar
+    un cop existeixi la transformada lat/lon -> píxel per al mostreig (gairebé gratis llavors).
+
+- **Mode fosc: decisió revisada (oracle Opus, 2026-08-18) - descartat per ara, no és un rebuig
+  definitiu.** La justificació original d'aquest projecte (`01-data-sources.md` §10, "HA ja
+  gestiona el seu tema, la imatge no necessita inversió pròpia") era incompleta: el "chrome" del
+  dashboard sí es repinta sol, però el contingut d'una imatge servida és un raster inert que no
+  ho fa mai - el mateix error de categoria que documenta `../radarcat/CLAUDE.md` per l'app
+  macOS. Verificat que no hi ha cap manera barata de resoldre-ho: el backend mai sap el tema del
+  navegador en una petició d'imatge (`image_proxy` és agnòstic d'identitat, `state`+`token`
+  només), l'únic mecanisme natiu de HA per triar imatge segons tema (`dark_mode_image`) no
+  existeix a `picture-entity`/`picture-glance` (només a `picture-elements`, i reportat trencat
+  des de 2021), i un filtre CSS `invert()` seria una rotació de to de 180° que trencaria la
+  llegenda de colors de pluja (moderada->blau, feble->taronja...) exactament igual que un
+  filtre ingenu en Python. Única solució real si mai cal: repetir el patró `radar`/
+  `radar_actual` amb dues entitats més (`_dark`), amb el mateix algorisme d'inversió asimètrica
+  de `RadarCompositor.swift` (base invertida, radar mai tocat) - doblant el cost de compositing
+  per un desajust merament estètic, no funcional. No construir-ho sense una queixa real
+  d'usuari primer.
+
 - Blueprint d'automació de notificació de pluja.
 - Opcions de configuració (interval, nombre de frames).
