@@ -1,6 +1,6 @@
 [project]
 name = "ha-radarcat"
-version = "0.1.0"
+version = "0.1.1"
 description = "Home Assistant custom integration for the Meteocat weather radar animation over Catalonia."
 requires-python = ">=3.13"
 license = { text = "MIT" }

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.1](https://github.com/pmontp19/ha-radarcat/compare/ha-radarcat-v0.1.0...ha-radarcat-v0.1.1) (2026-08-18)
+
+
+### Features
+
+* add brand icon, closing the HACS brands gap ([67cb9d5](https://github.com/pmontp19/ha-radarcat/commit/67cb9d59a23ae782408140b2ae45c04fcfe93825))
+
+
+### Bug Fixes
+
+* replace hand-drawn brand icon with a real MDI radar glyph ([9c3d48f](https://github.com/pmontp19/ha-radarcat/commit/9c3d48f48bfb37b12d21f0b941888e9af7c17157))
+
 ## 0.1.0 (2026-08-18)
 
 
