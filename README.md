@@ -66,7 +66,7 @@ name: Radar Catalunya
 
 ## Font de dades
 
-El radar es serveix des del giny públic de Meteocat (`static-m.meteo.cat`), no des de la seva API oficial documentada: no hi ha cap contracte de versionat ni garantia que no canviï. Detalls complets (endpoints, graelles de tiles, cadència) a [`docs/01-data-sources.md`](docs/01-data-sources.md).
+El radar es serveix des d'un endpoint públic de Meteocat, no des de la seva API oficial documentada: no hi ha cap contracte de versionat ni garantia que no canviï. Detalls complets (endpoints, graelles de tiles, cadència) a [`docs/01-data-sources.md`](docs/01-data-sources.md).
 
 ## Eliminar la integració
 
@@ -89,7 +89,7 @@ Voleu contribuir? Mireu [`CONTRIBUTING.md`](CONTRIBUTING.md) (convenció de comm
 
 ## Disclaimer
 
-This project is **not affiliated with or endorsed by** Meteocat or the Generalitat de Catalunya. Data is public but served through Meteocat's public radar widget, not a documented, officially supported API: it can change without notice.
+This project is **not affiliated with or endorsed by** Meteocat or the Generalitat de Catalunya. Data is public but served through an undocumented Meteocat endpoint, not a documented, officially supported API: it can change without notice.
 
 ## Licence
 
