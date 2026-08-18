@@ -31,11 +31,11 @@ Quan una regla és `exempt`, **sempre** portem un comentari d'una línia explica
 
 | Tier | Done | Todo | Exempt | Total |
 | :---: | ---: | ---: | ---: | ---: |
-| 🥉 Bronze | 14 | 1 | 5 | 20 |
+| 🥉 Bronze | 15 | 0 | 5 | 20 |
 | 🥈 Silver | 5 | 1 | 4 | 10 |
 | 🥇 Gold | 7 | 4 | 10 | 21 |
 | 🏆 Platinum | 2 | 1 | 0 | 3 |
-| **Total** | **28** | **7** | **19** | **54** |
+| **Total** | **29** | **6** | **19** | **54** |
 
 > Recompte verificat a Integration (T5) contra `custom_components/radarcat/quality_scale.yaml` i el codi real (83 tests, 100% cobertura, `ruff check`/`ruff format --check` nets).
 
@@ -61,12 +61,7 @@ Quan una regla és `exempt`, **sempre** portem un comentari d'una línia explica
 | `docs_high_level_description` | Secció "Què és" del README |
 | `docs_installation_instructions` | Secció "Instal·lació" (HACS + manual) del README |
 | `docs_removal_instructions` | Secció "Eliminar la integració" del README |
-
-### ⏳ Pendent
-
-| Regla | Esforç | Què |
-| --- | ---: | --- |
-| `brands` | S | `custom_components/radarcat/brand/icon.png` no existeix (verificat: no hi ha directori `brand/`). No es fabrica cap PNG per fingir-ho fet: cal una icona real 256×256 abans de publicar-la via Brands Proxy API |
+| `brands` | `custom_components/radarcat/brand/icon.png` (256×256) i `icon@2x.png` (512×512), servits via la Brands Proxy API (HA ≥2026.3) |
 
 ### 🚫 Exempts
 
@@ -169,11 +164,10 @@ Quan una regla és `exempt`, **sempre** portem un comentari d'una línia explica
 ## Prioritització per versió (KISS)
 
 ### v0.1.0 (aquesta release): ja completa
-Bronze + Silver quasi complets (`brands`/`parallel_updates` són l'únic deute, tots dos XS-S). Gold: diagnòstics, devices, traduccions i tota la documentació bàsica del README ja fets.
+Bronze complet (`brands` inclòs). Silver quasi complet (`parallel_updates` és l'únic deute, XS). Gold: diagnòstics, devices, traduccions i tota la documentació bàsica del README ja fets.
 
 ### v0.2.0: Gold restant i coixí tècnic
 - `parallel_updates` (XS, hauria de fer-se abans fins i tot, és gairebé gratis)
-- `brands` (icona real 256×256)
 - `icon_translations`, `exception_translations`, `repair_issues` (probablement lligats al sensor de severitat de pluja i a la detecció de canvis d'esquema del giny)
 - `docs_troubleshooting`
 

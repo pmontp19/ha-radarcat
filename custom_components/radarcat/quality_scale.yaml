@@ -7,9 +7,7 @@ rules:
     status: exempt
     comment: "No service actions exposed; the integration is a single passive image entity, nothing to trigger."
   appropriate_polling: done
-  brands:
-    status: todo
-    comment: "custom_components/radarcat/brand/icon.png does not exist yet; not fabricated to fake this done."
+  brands: done
   common_modules: done
   config_flow: done
   config_flow_test_coverage: done
