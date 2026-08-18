@@ -11,6 +11,15 @@ sense cap targeta Lovelace pròpia: qualsevol targeta estàndard (`picture-entit
 | Entitat | Plataforma | Descripció |
 | --- | --- | --- |
 | `image.radarcat_radar` | `image` (`ImageEntity`) | L'animació dels últims 10 frames (~1h) com a WEBP animat |
+| `image.radarcat_radar_actual` | `image` (`ImageEntity`) | Només l'últim frame compost, com a PNG estàtic (sense animar) |
+
+Totes dues entitats sempre presents, sense cap camp de configuració que en triï una o altra
+(decisió explícita de Pere, veure `AGENTS.md`): alguns usos (automatitzacions, dashboards amb
+poc ample de banda, targetes que no volen moviment) volen només "com està ara mateix", el mateix
+patró que fa servir AEMET (`02-existing-integrations.md` §2) — no calia forçar un únic entity per
+a totes dues necessitats ni afegir un toggle al flux de configuració (que hauria trencat el
+"zero camps" de §3). `radar_actual` reutilitza el mateix frame ja compost pel coordinator (l'últim
+de la finestra), no en refà cap.
 
 **Res més a v0.1.0.** Cap sensor, cap ubicació, cap avís de pluja — es documenten com a v0.2.0
 a `05-implementation-plan.md` §"Després de l'MVP". La motivació és velocitat i abast mínim

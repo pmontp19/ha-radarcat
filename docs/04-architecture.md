@@ -161,6 +161,19 @@ stepInterval` (0.35s), que reprodueix ràpid perquè és per a l'ull humà, no u
 `duration=600` ms/frame (loop continu, `loop=0`) és el punt de partida raonable; ajustable sense
 tocar cap altra part del sistema si en la verificació manual es veu massa ràpid/lent.
 
+### 4.4. `encode_static` — l'últim frame sol (v0.1.1, `image.radarcat_radar_actual`)
+
+```python
+def encode_static(frame: PIL.Image.Image) -> bytes:
+    """PNG del frame més recent, sense animar. Sense concerns de paleta/dithering
+    (§4.3) - un únic frame no té res a quantitzar."""
+```
+
+PNG, no WEBP: l'animació necessitava WEBP per evitar la paleta de 256 colors de GIF (§3), però
+un frame sol no té aquest problema - PNG és més simple i universalment compatible, sense cap
+motiu real per triar WEBP aquí. `IMAGE_CONTENT_TYPE` (animat) i `STATIC_IMAGE_CONTENT_TYPE`
+(`"image/png"`) són constants separades a `const.py`.
+
 ## 5. `api.py` (Unit 1)
 
 ```python
@@ -186,12 +199,16 @@ def base_tile_url(x: int, y: int) -> str: ...
 @dataclass
 class RadarcatData:
     content: bytes              # WEBP animat, ja codificat
+    static_content: bytes       # PNG de només l'últim frame (§4.4), ja codificat
     latest_timestamp: datetime  # dataUltimaImatge del frame més nou de la finestra
     frame_count: int
 
 class RadarcatCoordinator(TimestampDataUpdateCoordinator[RadarcatData]):
     ...
 ```
+
+`static_content` es deriva de `frames[-1]` (el mateix objecte `PIL.Image` que ja forma part de la
+finestra, no un fetch/compose apart) via `encode_static` (§4.4) - cap cost addicional de xarxa.
 
 Estat entre cicles: `_base_tiles: dict | None` (cachejat un cop que arriba a
 `MIN_GOOD_BASE_TILES`, mai abans — mateix contracte que `ensureBase` del projecte germà: una
@@ -220,18 +237,39 @@ Cicle (`_async_update_data`):
 class RadarcatEntity(CoordinatorEntity[RadarcatCoordinator]):
     """DeviceInfo compartit + ATTRIBUTION + available (delega al coordinator, com CecatEntity)."""
 
-class RadarcatImage(RadarcatEntity, ImageEntity):
+class _RadarcatImageBase(RadarcatEntity, ImageEntity):
+    """Sincronització d'`image_last_updated` compartida entre les dues entitats `image`
+    (animada i estàtica, §"v0.1.1" més avall) - la mateixa lògica de bump, la mateixa
+    condició de "només si latest_timestamp ha avançat", una sola vegada."""
+
+class RadarcatImage(_RadarcatImageBase):
     _attr_content_type = IMAGE_CONTENT_TYPE
     _attr_translation_key = "radar"
 
     async def async_image(self) -> bytes | None:
         return self.coordinator.data.content if self.coordinator.data else None
+
+class RadarcatStaticImage(_RadarcatImageBase):
+    _attr_content_type = STATIC_IMAGE_CONTENT_TYPE
+    _attr_translation_key = "radar_actual"
+
+    async def async_image(self) -> bytes | None:
+        return self.coordinator.data.static_content if self.coordinator.data else None
 ```
 
 El bump de `_attr_image_last_updated` es fa al LISTENER del coordinator (registrat a
 `async_added_to_hass`, o directament aprofitant que `CoordinatorEntity` ja crida
 `async_write_ha_state()` en cada actualització) — MAI dins `async_image()` (advertència
-explícita de la doc oficial, veure ADR §3).
+explícita de la doc oficial, veure ADR §3). Cal seguir seguint el patró ja corregit en revisió
+(§"State of the repository" a `AGENTS.md`): seed `_attr_image_last_updated` també a `__init__`,
+no només al listener, perquè `async_config_entry_first_refresh()` ja ha corregut dades abans que
+cap de les dues entitats es construeixi.
+
+### v0.1.1 — `image.radarcat_radar_actual`
+
+Segona entitat, sempre present (docs/03-feature-spec.md §2, decisió explícita, no una opció de
+configuració). `async_setup_entry` (T3/`__init__.py`, ja landed) ha d'afegir totes dues entitats
+a la mateixa crida `async_add_entities([...])`.
 
 `DeviceInfo`: dispositiu de servei únic "RadarCat", `entry_type=SERVICE`, com els tres siblings.
 
