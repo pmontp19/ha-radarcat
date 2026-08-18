@@ -7,6 +7,8 @@
 ![CI](https://github.com/pmontp19/ha-radarcat/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/github/license/pmontp19/ha-radarcat)
 
+![La targeta picture-entity mostrant l'animació del radar en un dashboard real de Home Assistant](docs/images/dashboard-picture-entity.png)
+
 ## Què és
 
 RadarCat compon, cada cop que Meteocat publica un frame nou, els tiles del seu radar públic i el mapa base de Catalunya en un WEBP animat amb els últims 10 frames (aproximadament l'última hora). És el mateix pipeline de compositing (graelles, retall i escalat) que aquest autor ja fa servir a la seva app de menú macOS ([`radarcat`](https://github.com/pmontp19/radarcat)), ara portat a Home Assistant.
@@ -31,6 +33,8 @@ RadarCat compon, cada cop que Meteocat publica un frame nou, els tiles del seu r
 
 **Cap.** El flux d'instal·lació és una única pantalla de confirmació (fa una petició de prova a Meteocat abans de crear l'entrada); no hi ha cap camp a omplir perquè el radar cobreix tot Catalunya sense cap variació per usuari.
 
+![Pantalla de configuració real de RadarCat: "No cal cap paràmetre"](docs/images/config-flow.png)
+
 ## Les entitats
 
 | Entitat | Plataforma | Descripció |
@@ -39,6 +43,8 @@ RadarCat compon, cada cop que Meteocat publica un frame nou, els tiles del seu r
 | `image.radarcat_radar_actual` | `image` | Només l'últim frame compost, en PNG estàtic (sense animar) - pensat per a automatitzacions o targetes que no volen moviment |
 
 Totes dues entitats són sempre presents, sense cap camp de configuració que en triï una o altra: `radar_actual` reutilitza el mateix frame ja compost pel coordinator (l'últim de la finestra), no en refà cap ni fa cap petició de xarxa addicional.
+
+![Diàleg de l'entitat "Radar actual" mostrant l'últim frame en PNG estàtic](docs/images/static-entity.png)
 
 **Com s'actualitza**: es consulten les metadades de Meteocat cada 6 minuts (la mateixa cadència amb la qual Meteocat publica). Si el frame més recent no ha canviat, no es refà res. Si n'hi ha un nou, es compon només aquell frame i es descarta el més antic de la finestra. En instal·lar la integració, o si hi ha hagut una interrupció de més d'un cicle de 6 minuts, es reconstrueix la finestra completa dels 10 frames de cop en lloc de deixar-hi un forat.
 
