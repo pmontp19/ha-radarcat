@@ -28,8 +28,8 @@ provable, no una limitació tècnica: la lògica de classificació de pluja ja e
 
 ## 3. Configuració
 
-**Zero camps d'usuari.** El radar és tot Catalunya, sense variació per usuari - no hi ha res a
-triar (a diferència dels siblings, que sí necessiten ubicació/radi perquè el seu senyal és
+**Zero camps d'usuari.** El radar és tota Catalunya, sense variació per usuari - no hi ha res a
+triar (a diferència dels siblings, que sí que necessiten ubicació/radi perquè el seu senyal és
 puntual). El flux de configuració és una única pantalla de confirmació que fa una petició de
 prova a l'endpoint de metadades (`test_before_configure`) abans de crear l'entrada:
 - Èxit (200 + JSON amb els dos camps de data) → crea l'entrada.

@@ -53,7 +53,7 @@ a sobre. Veure "Onades" més avall.
 **Fitxers**: `custom_components/radarcat/coordinator.py`, `custom_components/radarcat/
 __init__.py`, `tests/test_coordinator.py`, `tests/test_init.py`.
 
-**Contracte**: `04-architecture.md` §6. Exemplar a mirar per l'estructura general (no per la
+**Contracte**: `04-architecture.md` §6. Exemplar a mirar per a l'estructura general (no per a la
 lògica, que és pròpia): `../ha-cecat/custom_components/cecat/coordinator.py` i `__init__.py`.
 
 Depèn de T1 + T2 (revisat).
@@ -134,8 +134,8 @@ verificació (regla dura de `orchestrate`).
 - **Mode fosc: decisió revisada (oracle Opus, 2026-08-18) - descartat per ara, no és un rebuig
   definitiu.** La justificació original d'aquest projecte (`01-data-sources.md` §10, "HA ja
   gestiona el seu tema, la imatge no necessita inversió pròpia") era incompleta: el "chrome" del
-  dashboard sí es repinta sol, però el contingut d'una imatge servida és un raster inert que no
-  ho fa mai - el mateix error de categoria que documenta `../radarcat/CLAUDE.md` per l'app
+  dashboard sí que es repinta sol, però el contingut d'una imatge servida és un raster inert que no
+  ho fa mai - el mateix error de categoria que documenta `../radarcat/CLAUDE.md` per a l'app
   macOS. Verificat que no hi ha cap manera barata de resoldre-ho: el backend mai sap el tema del
   navegador en una petició d'imatge (`image_proxy` és agnòstic d'identitat, `state`+`token`
   només), l'únic mecanisme natiu de HA per triar imatge segons tema (`dark_mode_image`) no
@@ -154,12 +154,12 @@ verificació (regla dura de `orchestrate`).
   seu JS): el radar mai fa cap petició per sobre de z=7, a cap nivell de zoom, ni tan sols al
   topall del propi giny (z=10) - Leaflet només escala visualment el mateix tile de z=7
   (confirmat visualment: l'eco surt borrós en apropar-se, mai més detallat). El mapa base sí
-  canvia de z de veritat (08->09->10), però sempre acompanyat d'un requadre proporcionalment
+  que canvia de z de veritat (08->09->10), però sempre acompanyat d'un requadre proporcionalment
   més petit - mai "mateix requadre, z més alt", que és exactament l'error que aquest projecte ja
   va descobrir i evitar (z=9 fa les etiquetes més petites, no més nítides, veure
   `01-data-sources.md` §3). Conclusió: un zoom de veritat és canviar la MIDA DEL REQUADRE (i
   re-triar la z adequada per a aquell requadre), no exposar la z com a paràmetre - una funció
-  molt més gran que un simple toggle, i que contradiu els no-objectius explícits del MVP (zero
+  molt més gran que un simple toggle, i que contradiu els no-objectius explícits de l'MVP (zero
   camps, zero targeta pròpia, `03-feature-spec.md` §3/§7). Cap drecera de dashboard tampoc:
   `picture-entity`/`picture-glance` no tenen cap opció de retall/zoom pròpia. Si mai es
   reconsidera: fer-ho com `radar`/`radar_actual` - entitats addicionals amb retalls fixos,

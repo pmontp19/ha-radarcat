@@ -36,7 +36,7 @@ RADAR_Z = 7
 RADAR_X_RANGE = range(63, 69)   # 63..68 inclusiu
 RADAR_Y_RANGE = range(78, 84)   # 78..83 inclusiu
 
-# BaseGrid - z=8, únic zoom utilitzable pel mapa base. y creix cap al NORD (oposat al radar).
+# BaseGrid - z=8, únic zoom utilitzable per al mapa base. y creix cap al NORD (oposat al radar).
 BASE_Z = 8
 BASE_X_RANGE = range(126, 133)  # 126..132 inclusiu
 BASE_Y_RANGE = range(157, 163)  # 157..162 inclusiu
@@ -112,7 +112,7 @@ creixent cap AVALL.** Aquesta NO és una diferència de graelles (radar vs base)
 diferència entre els dos RENDERITZADORS, i s'ha de corregir un cop, al final, sobre el canvas
 sencer, no barrejant-la amb la lògica de graelles.
 
-**Procediment (no en desviïs ni en re-derivis la direcció de cap graella pel teu compte - les
+**Procediment (no et desviïs ni re-derivis la direcció de cap graella pel teu compte - les
 fórmules de sota ja la porten incorporada correctament, verificada en producció):**
 
 1. Calcula `crop_x0`, `crop_y0`, `cw`, `ch` EXACTAMENT com `RadarCompositor.catalunyaCrop`
@@ -260,9 +260,9 @@ class RadarcatStaticImage(_RadarcatImageBase):
 El bump de `_attr_image_last_updated` es fa al LISTENER del coordinator (registrat a
 `async_added_to_hass`, o directament aprofitant que `CoordinatorEntity` ja crida
 `async_write_ha_state()` en cada actualització) - MAI dins `async_image()` (advertència
-explícita de la doc oficial, veure ADR §3). Cal seguir seguint el patró ja corregit en revisió
+explícita de la doc oficial, veure ADR §3). Cal seguir el patró ja corregit en revisió
 (§"State of the repository" a `AGENTS.md`): seed `_attr_image_last_updated` també a `__init__`,
-no només al listener, perquè `async_config_entry_first_refresh()` ja ha corregut dades abans que
+no només al listener, perquè `async_config_entry_first_refresh()` ja ha corregit dades abans que
 cap de les dues entitats es construeixi.
 
 ### v0.1.1 - `image.radarcat_radar_actual`

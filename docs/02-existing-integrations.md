@@ -14,7 +14,7 @@ al HACS default store. ✅ Última actualització fa pocs dies en el moment de l
 `karasu/meteocat` és un intent antic i abandonat (2019, "not usable yet"). ✅
 
 **Conclusió: cap integració HA existent mostra el radar de Meteocat, animat o no.** Aquest
-projecte no té precedent directe a portar - sí el té el patró general (§2-3).
+projecte no té precedent directe a portar - sí que el té el patró general (§2-3).
 
 ## 2. El patró més proper: AEMET (`aemet`, integració oficial de HA core)
 
@@ -31,8 +31,8 @@ partir de la recerca a `references/` sobre el platform `image` (veure oracle ADR
 
 ## 3. Buienradar (NL/BE, integració oficial `buienradar`)
 
-Exposa `camera` (`BuienradarCam`, desactivada per defecte) amb **una imatge fixa** de tot els
-Països Baixos - tot i que Buienradar sí ofereix un endpoint d'animació pròpia
+Exposa `camera` (`BuienradarCam`, desactivada per defecte) amb **una imatge fixa** de tots els
+Països Baixos - tot i que Buienradar sí que ofereix un endpoint d'animació pròpia
 (`image.buienradar.nl/2.0/image/animation/...`) que HA **no** fa servir. ✅. Sense targeta
 dedicada; la gent només posa una `picture-entity` genèrica sobre l'entitat `camera`.
 
@@ -43,7 +43,7 @@ canvas, crossfade entre frames, compensació de moviment opcional amb optical fl
 Worker). Fonts fixes per configuració (RainViewer, NOAA, DWD) - **no genèric**, afegir Meteocat
 implicaria fork, no configuració. ✅.
 
-Descartat com a base per aquest projecte: (a) no hi ha manera neta d'afegir-hi Meteocat sense
+Descartat com a base per a aquest projecte: (a) no hi ha manera neta d'afegir-hi Meteocat sense
 fork, (b) recompondre tiles al navegador de cada client repeteix feina que el nostre backend ja
 fa un cop per cicle per a tots els clients - el patró AEMET (§2) és més eficient i més idiomàtic
 en HA per a un backend Python que ja fa el compositing.
@@ -54,7 +54,7 @@ Decodifica RADOLAN en una entitat `camera` + overlay Leaflet amb previsió de mo
 integració oficial de radar al core `dwd_weather_warnings`. 📄 (fòrum HA). Mateixa família que
 Buienradar/AEMET: backend compon, frontend mostra amb components estàndard.
 
-## 6. Fallback de cost zero, descartat conscientment per aquest MVP: iframe del giny
+## 6. Fallback de cost zero, descartat conscientment per a aquest MVP: iframe del giny
 
 El fòrum HA recomana sovint incrustar el giny d'un tercer via `webpage`/iframe card (p.ex.
 Windy.com) per a radars regionals no coberts. Descartat aquí perquè: (a) el giny de Meteocat
@@ -65,9 +65,9 @@ amb entitat pròpia, no un embed de tercers. 🔶 (decisió d'abast).
 
 ## 7. No existeix cap "mapa de radar natiu" al core de HA
 
-`ha-map-card` (HACS, no core) és qui de vegades es confon amb això - afegeix capes Leaflet
+`ha-map-card` (HACS, no core) és el que de vegades es confon amb això - afegeix capes Leaflet
 extra a un mapa, però requereix connectar sensors REST/automacions a mà per a qualsevol font.
-No és un precedent de codi a reutilitzar per aquest projecte. ✅.
+No és un precedent de codi a reutilitzar per a aquest projecte. ✅.
 
 ## Veredicte
 

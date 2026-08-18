@@ -4,7 +4,7 @@ Evidència: ✅ verificat contra el codi font/live · 🗄️ verificat sobre un
 📄 documentat per la font oficial · 🔶 inferència · ❓ no verificat.
 
 Tota la geometria d'aquest document ve d'un projecte germà ja verificat i en producció,
-`../radarcat` (app macOS Swift que composa aquest mateix radar cada 6 min des de fa setmanes):
+`../radarcat` (app macOS Swift que compon aquest mateix radar cada 6 min des de fa setmanes):
 `CLAUDE.md`, `Sources/RadarCat/RadarAPI.swift`, `RadarCompositor.swift`, `RadarGrid.swift`.
 No es re-deriva res aquí que ja estigui verificat allà - es cita.
 
@@ -17,7 +17,7 @@ investigació prèvia d'aquest mateix projecte, veure §11). Va ser reverse-engi
 trànsit de xarxa real del giny en un navegador (Chrome DevTools), no des d'una especificació.
 ✅ (`../radarcat/CLAUDE.md` §"Tile sources").
 
-Si Meteocat canvia el conjunt de tiles, això s'ha de refer rendint el giny real i mesurant de
+Si Meteocat canvia el conjunt de tiles, això s'ha de refer renderitzant el giny real i mesurant de
 nou - mai recalculant des d'una fórmula lat/lon (aquesta relació NO és Web Mercator estàndard
 per a aquestes graelles). ✅
 
@@ -44,7 +44,7 @@ creix cap al sud**. ✅ (`RadarGrid.swift:9-14`, `CLAUDE.md`).
 **Base** (`BaseGrid`): existeix a z=7, z=8 i z=9, però **només z=8 és utilitzable**:
 
 - z=7 és una imatge de giny pre-renderitzada, retallada en una graella 6x6 - **no** una
-  projecció geogràfica contínua. Gairebé tot Catalunya cau en un únic tile (`x=64,y=80`); no
+  projecció geogràfica contínua. Gairebé tota Catalunya cau en un únic tile (`x=64,y=80`); no
   hi ha Terres de l'Ebre; hi ha una vora negra real de ~24px al primer tile `y=81`. Descartat.
 - z=9 és una projecció contínua real amb el doble de detall geomètric, però Meteocat renderitza
   les etiquetes de text a mida de PÍXEL fixa per tile - a z=9 la mateixa etiqueta ("Barcelona")
@@ -60,7 +60,7 @@ Meteocat en un navegador i comparant amb el trànsit de xarxa capturat).
 
 ## 4. Nesting radar↔base i escalat 2x
 
-Radar (z=7) i base (z=8) són un nivell de zoom de diferència: nesting XYZ estàndard, el tile de
+Hi ha un nivell de zoom de diferència entre el radar (z=7) i la base (z=8): nesting XYZ estàndard, el tile de
 base `(X,Y)` és fill del tile de radar `(X/2, Y/2)`. Cada tile de radar es dibuixa **escalat
 2x** sobre l'espai de coordenades de la base, ancorat a `(2x, 2y)` - cobreix exactament els
 seus 4 fills. Com que les dues graelles tenen la y invertida entre elles, l'ancoratge (2x,2y)
@@ -71,7 +71,7 @@ flip d'imatge - només cal l'ancoratge correcte. ✅ (`RadarCompositor.swift:243
 
 En coordenades tile de `BaseGrid` (z=8): `x ∈ [127.85, 130.55]`, `y ∈ [159.4, 161.95]`. Resultat
 final: **~691×653px**. Aquests valors són **mesurats empíricament** contra el contingut real
-en píxels (fronteres/etiquetes, estable) amb marge afegit perquè l'eco de pluja (que sí pot
+en píxels (fronteres/etiquetes, estable) amb marge afegit perquè l'eco de pluja (que sí que pot
 sobresortir, p.ex. tempestes al Pirineu) no quedi tallat - **no es deriven de cap fórmula**.
 ✅ (`RadarCompositor.swift:40-91`).
 
@@ -101,19 +101,19 @@ píxels (no com a overlay HTML del giny). Regió normalitzada (origen dalt-esque
 real - en un frame real això va generar 70 de 94 mostres "humides" que eren la insígnia, no
 pluja. ✅ (`RadarCompositor.swift:93-125`, `RainDetector.swift:28-34`).
 
-Rellevant per aquest projecte NOMÉS si mai s'afegeix un sensor de severitat de pluja (v0.2,
+Rellevant per a aquest projecte NOMÉS si mai s'afegeix un sensor de severitat de pluja (v0.2,
 fora de l'MVP): qualsevol mostreig de píxels ha d'excloure aquesta regió.
 
 ## 9. Llegenda de colors del radar (per a un futur sensor de pluja)
 
 Classificació per to (hue), no per RGB exacte: gris (delta<30) = sense eco; 45°-170° (verd/
 groc) = moderada; 170°-300° (cian/blau/lila) = feble; 300°-345° (magenta) = calamarsa; resta
-(vermell/taronja) = forta. ✅ (`RainDetector.swift:211-233`). No cal per l'MVP (imatge animada
+(vermell/taronja) = forta. ✅ (`RainDetector.swift:211-233`). No cal per a l'MVP (imatge animada
 pura), documentat aquí perquè quan es faci v0.2 no calgui re-derivar-ho.
 
 ## 10. Aparença clara/fosca: NO aplicable a aquest port
 
-`radarcat` inverteix la luminància de la capa de base per l'aparença fosca del menú macOS
+`radarcat` inverteix la luminància de la capa de base per a l'aparença fosca del menú macOS
 (`CIColorInvert` + corba tonal, mai sobre el radar). Això és estètica específica d'una barra de
 menú macOS - Home Assistant ja gestiona el seu propi tema al frontend (Lovelace), i la imatge
 d'un `picture-entity` no necessita cap inversió pròpia. **Es descarta explícitament portar
@@ -159,12 +159,12 @@ no més ràpid "perquè es pot". 🔶.
 8. Les dates de metadades no són ISO 8601 real (`"MM/dd/yyyy HH:mm'Z'"`, literal `Z`).
 9. Pillow treballa top-left/y-avall; el pipeline Swift original treballa bottom-left/y-amunt -
    la matemàtica de posicionament NO es pot copiar literalment (§6).
-10. No hi ha quota ni ToS documentats per aquest giny concret (a diferència de l'API oficial) -
+10. No hi ha quota ni ToS documentats per a aquest giny concret (a diferència de l'API oficial) -
     ser conservador amb la cadència en lloc d'assumir que "no hi ha límit" vol dir "sense límit".
 11. `RadarMeta.dataUltimaImatge` és el rellotge de veritat per saber si hi ha un frame nou - mai
     disparar una recomposició per un simple tick del temporitzador si el timestamp no ha canviat.
 
-## 15. Verdict
+## 15. Veredicte
 
 **Sí, hi ha prou base per construir l'MVP, i el risc geomètric és baix.** Tota la matemàtica de
 graelles/retall/nesting ja està verificada en producció per `radarcat` (setmanes funcionant,

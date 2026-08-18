@@ -19,11 +19,11 @@ Aquest projecte té una superfície molt més petita que els siblings: **una sol
 Quan dubtem entre `done` i `todo`, mirem:
 
 1. **És gairebé gratis?** (1-5 línies de codi, patró ben documentat) → fer-ho ja, marcar `done`.
-2. **És valor real per l'usuari?** (diagnosi, recovery, traduccions) → fer-ho en v1.
+2. **És valor real per a l'usuari?** (diagnosi, recovery, traduccions) → fer-ho en v1.
 3. **És coixí per a futures integracions?** → marcar `todo` i tornar-hi.
 4. **No aplica al nostre context?** (auth, discovery, devices físics, camps de configuració que no existeixen) → `exempt` amb comentari.
 
-Quan una regla és `exempt`, **sempre** portem un comentari d'una línia explicant per què. Així un revisor extern (o nosaltres d'aquí 6 mesos) entén la decisió.
+Quan una regla és `exempt`, **sempre** portem un comentari d'una línia explicant per què. Així un revisor extern (o nosaltres d'aquí a 6 mesos) entén la decisió.
 
 ---
 
@@ -96,7 +96,7 @@ Quan una regla és `exempt`, **sempre** portem un comentari d'una línia explica
 
 | Regla | Esforç | Què |
 | --- | ---: | --- |
-| `parallel_updates` | XS | Cap constant `PARALLEL_UPDATES` declarada a `image.py` (verificat, absent). La regla oficial no té excepció per plataformes basades en coordinator: cal declarar `PARALLEL_UPDATES = 0` explícitament encara que, amb una sola entitat push, no hi hagi col·lisió real |
+| `parallel_updates` | XS | Cap constant `PARALLEL_UPDATES` declarada a `image.py` (verificat, absent). La regla oficial no té excepció per a plataformes basades en coordinator: cal declarar `PARALLEL_UPDATES = 0` explícitament encara que, amb una sola entitat push, no hi hagi col·lisió real |
 
 ### 🚫 Exempts
 
@@ -139,7 +139,7 @@ Quan una regla és `exempt`, **sempre** portem un comentari d'una línia explica
 | `discovery` | Servei `cloud_polling` (manifest): no és un dispositiu de xarxa local descobrible |
 | `discovery_update_info` | Conseqüència de l'anterior: no existeix cap flux de discovery |
 | `docs_supported_devices` | La integració no exposa dispositius físics, consumeix un giny web públic |
-| `docs_use_cases` | L'única entitat és una imatge de només visualització, sense cap estat ni atribut sobre el qual construir una automació a v0.1.0. El sensor de severitat de pluja (el disparador natural) es diferi a v0.2.0 |
+| `docs_use_cases` | L'única entitat és una imatge de només visualització, sense cap estat ni atribut sobre el qual construir una automació a v0.1.0. El sensor de severitat de pluja (el disparador natural) es difereix a v0.2.0 |
 | `dynamic_devices` | Un únic device fix per entrada, sense cicle de vida d'alta/baixa |
 | `entity_category` | No existeix cap entitat de diagnòstic/config a v0.1.0: l'única entitat és el contingut principal que ofereix la integració |
 | `entity_device_class` | `ImageEntity`/`ImageEntityDescription` (`homeassistant.components.image`, verificat llegint el codi real) no defineixen cap concepte de `device_class` |
@@ -168,7 +168,7 @@ Quan una regla és `exempt`, **sempre** portem un comentari d'una línia explica
 
 ## Prioritització per versió (KISS)
 
-### v0.1.0 (aquesta release): ja complert
+### v0.1.0 (aquesta release): ja completa
 Bronze + Silver quasi complets (`brands`/`parallel_updates` són l'únic deute, tots dos XS-S). Gold: diagnòstics, devices, traduccions i tota la documentació bàsica del README ja fets.
 
 ### v0.2.0: Gold restant i coixí tècnic

@@ -31,7 +31,7 @@ RadarCat compon, cada cop que Meteocat publica un frame nou, els tiles del seu r
 
 ## Configuració
 
-**Cap.** El flux d'instal·lació és una única pantalla de confirmació (fa una petició de prova a Meteocat abans de crear l'entrada); no hi ha cap camp a omplir perquè el radar cobreix tot Catalunya sense cap variació per usuari.
+**Cap.** El flux d'instal·lació és una única pantalla de confirmació (fa una petició de prova a Meteocat abans de crear l'entrada); no hi ha cap camp a omplir perquè el radar cobreix tota Catalunya sense cap variació per usuari.
 
 ![Pantalla de configuració real de RadarCat: "No cal cap paràmetre"](docs/images/config-flow.png)
 
