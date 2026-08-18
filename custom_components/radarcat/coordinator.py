@@ -51,7 +51,7 @@ from homeassistant.util.dt import utcnow
 from PIL import Image
 
 from . import api
-from .compositor import compose_frame, encode_animation
+from .compositor import compose_frame, encode_animation, encode_static
 from .const import (
     BASE_X_RANGE,
     BASE_Y_RANGE,
@@ -78,9 +78,13 @@ class RadarcatData:
 
     ``content`` is already-encoded WEBP bytes (docs/04-architecture.md §6) -
     ``image.py`` (T4) serves it as-is, no re-encoding on the read path.
+    ``static_content`` is a PNG of ``frames[-1]`` (docs/04-architecture.md
+    §4.4), the same already-composited frame, encoded via ``encode_static`` -
+    no extra fetch or compose for the second image entity.
     """
 
     content: bytes
+    static_content: bytes
     latest_timestamp: datetime
     frame_count: int
 
@@ -169,8 +173,10 @@ class RadarcatCoordinator(TimestampDataUpdateCoordinator[RadarcatData]):
             self._frames.pop(0)
 
         content = encode_animation([frame for _, frame in self._frames])
+        static_content = encode_static(self._frames[-1][1])
         return RadarcatData(
             content=content,
+            static_content=static_content,
             latest_timestamp=self._frames[-1][0],
             frame_count=len(self._frames),
         )

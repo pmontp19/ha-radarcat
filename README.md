@@ -31,11 +31,14 @@ RadarCat compon, cada cop que Meteocat publica un frame nou, els tiles del seu r
 
 **Cap.** El flux d'instal·lació és una única pantalla de confirmació (fa una petició de prova a Meteocat abans de crear l'entrada); no hi ha cap camp a omplir perquè el radar cobreix tot Catalunya sense cap variació per usuari.
 
-## L'entitat
+## Les entitats
 
 | Entitat | Plataforma | Descripció |
 | --- | --- | --- |
 | `image.radarcat_radar` | `image` | WEBP animat amb els últims 10 frames (~1 hora) del radar de Meteocat sobre Catalunya, amb la insígnia "meteo.cat" d'atribució visible |
+| `image.radarcat_radar_actual` | `image` | Només l'últim frame compost, en PNG estàtic (sense animar) - pensat per a automatitzacions o targetes que no volen moviment |
+
+Totes dues entitats són sempre presents, sense cap camp de configuració que en triï una o altra: `radar_actual` reutilitza el mateix frame ja compost pel coordinator (l'últim de la finestra), no en refà cap ni fa cap petició de xarxa addicional.
 
 **Com s'actualitza**: es consulten les metadades de Meteocat cada 6 minuts (la mateixa cadència amb la qual Meteocat publica). Si el frame més recent no ha canviat, no es refà res. Si n'hi ha un nou, es compon només aquell frame i es descarta el més antic de la finestra. En instal·lar la integració, o si hi ha hagut una interrupció de més d'un cicle de 6 minuts, es reconstrueix la finestra completa dels 10 frames de cop en lloc de deixar-hi un forat.
 

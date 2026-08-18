@@ -85,7 +85,12 @@ async def test_setup_entry_arms_coordinator_and_forwards_to_image(
     assert isinstance(entry.runtime_data, RadarcatCoordinator)
     assert entry.runtime_data.data is not None  # the first refresh really ran
     assert DOMAIN not in hass.data  # nothing on hass.data, only runtime_data
-    assert len(hass.states.async_entity_ids("image")) == 1
+    # Both image entities are always present (docs/03-feature-spec.md §2):
+    # the animation and the latest-frame-only static image.
+    assert hass.states.async_entity_ids("image") == [
+        "image.radarcat_radar",
+        "image.radarcat_radar_actual",
+    ]
 
 
 async def test_unload_entry_unloads_platforms_and_shuts_down_coordinator(

@@ -17,6 +17,9 @@
     "image": {
       "radar": {
         "name": "Radar"
+      },
+      "radar_actual": {
+        "name": "Radar actual"
       }
     }
   }

@@ -45,3 +45,4 @@ SCAN_INTERVAL_MIN = 6  # same cadence as ../radarcat - polling faster gains noth
 
 ATTRIBUTION = "Servei Meteorològic de Catalunya (Meteocat)"
 IMAGE_CONTENT_TYPE = "image/webp"
+STATIC_IMAGE_CONTENT_TYPE = "image/png"

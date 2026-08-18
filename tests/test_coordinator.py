@@ -156,6 +156,12 @@ async def test_first_cycle_builds_all_frames(
     animation = Image.open(io.BytesIO(coord.data.content))
     assert animation.format == "WEBP"
 
+    # static_content (docs/04-architecture.md §4.4/§6) is a plain PNG of the
+    # same newest frame already held in _frames, not a separate animation.
+    static = Image.open(io.BytesIO(coord.data.static_content))
+    assert static.format == "PNG"
+    assert static.convert("RGB").tobytes() == coord._frames[-1][1].tobytes()
+
 
 # ---------------------------------------------------------------------------
 # Unchanged timestamp: reuse self.data, no new fetch
@@ -215,6 +221,12 @@ async def test_new_timestamp_fetches_only_the_delta_frame(
     )
     # Base tiles are already cached from the first cycle: zero new base calls.
     assert _tile_call_count(mock_http, FONS_TILES_BASE) == base_calls_after_first
+
+    # static_content tracks the new newest frame too, still with no extra
+    # fetch (the delta-only tile-call assertions above already prove that -
+    # encode_static only ever reads self._frames[-1], see coordinator.py).
+    static = Image.open(io.BytesIO(coord.data.static_content))
+    assert static.convert("RGB").tobytes() == coord._frames[-1][1].tobytes()
 
 
 async def test_gap_larger_than_one_interval_rebuilds_a_contiguous_window(

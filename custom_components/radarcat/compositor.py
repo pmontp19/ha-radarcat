@@ -24,7 +24,7 @@ from .const import (
     TILE_SIZE,
 )
 
-__all__ = ["compose_frame", "encode_animation"]
+__all__ = ["compose_frame", "encode_animation", "encode_static"]
 
 
 def _catalunya_crop() -> tuple[float, float, int, int]:
@@ -125,4 +125,18 @@ def encode_animation(frames: list[Image.Image]) -> bytes:
         method=6,
         minimize_size=True,
     )
+    return buf.getvalue()
+
+
+def encode_static(frame: Image.Image) -> bytes:
+    """Encode a single frame as a plain PNG (docs/04-architecture.md §4.4).
+
+    Unlike encode_animation, there is nothing to quantize here: WEBP earned
+    its place over GIF (§3) only to avoid a 256-color palette mangling the
+    rain-severity hue bands across multiple frames, which cannot happen to a
+    single frame. PNG is simpler and universally compatible, with no reason
+    to prefer WEBP for this one image.
+    """
+    buf = io.BytesIO()
+    frame.save(buf, format="PNG")
     return buf.getvalue()

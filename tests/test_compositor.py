@@ -1,4 +1,5 @@
-"""Tests for compose_frame's tile geometry and encode_animation's WEBP output.
+"""Tests for compose_frame's tile geometry, encode_animation's WEBP output,
+and encode_static's PNG output.
 
 The geometry math is docs/04-architecture.md §4.1, a port of
 ../radarcat/Sources/RadarCat/RadarCompositor.swift's catalunyaCrop/
@@ -14,7 +15,11 @@ from __future__ import annotations
 import io
 
 import pytest
-from custom_components.radarcat.compositor import compose_frame, encode_animation
+from custom_components.radarcat.compositor import (
+    compose_frame,
+    encode_animation,
+    encode_static,
+)
 from custom_components.radarcat.const import (
     BASE_X_RANGE,
     BASE_Y_RANGE,
@@ -324,3 +329,31 @@ def test_encode_animation_rejects_empty_frame_list() -> None:
     """No frames is a programming error, not a silent empty WEBP."""
     with pytest.raises(ValueError):
         encode_animation([])
+
+
+# ---------------------------------------------------------------------------
+# encode_static: docs/04-architecture.md §4.4, a plain PNG of one frame only
+# ---------------------------------------------------------------------------
+
+
+def test_encode_static_produces_a_readable_png_matching_the_frame_size() -> None:
+    """The output re-opens as a PNG with the exact size of the source frame."""
+    frame = Image.new("RGB", (CW, CH), (10, 20, 30))
+
+    result = encode_static(frame)
+
+    reopened = Image.open(io.BytesIO(result))
+    assert reopened.format == "PNG"
+    assert reopened.size == (CW, CH)
+
+
+def test_encode_static_preserves_pixel_content() -> None:
+    """No quantization/dithering (§4.4): pixels round-trip exactly."""
+    base = {(128, 160): load_fixture("base_tile_z8_x128_y160.png")}
+    radar = {(65, 80): load_fixture("radar_tile_z7_x65_y80_no_echo.png")}
+    frame = compose_frame(base, radar)
+
+    result = encode_static(frame)
+
+    reopened = Image.open(io.BytesIO(result)).convert("RGB")
+    assert reopened.tobytes() == frame.tobytes()
