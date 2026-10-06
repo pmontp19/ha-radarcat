@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/pmontp19/ha-radarcat/compare/ha-radarcat-v0.1.1...ha-radarcat-v0.1.2) (2026-10-06)
+
+
+### Bug Fixes
+
+* drop Pillow from manifest requirements ([#17](https://github.com/pmontp19/ha-radarcat/issues/17)) ([7d89ae8](https://github.com/pmontp19/ha-radarcat/commit/7d89ae8db416b9bf4bfec2a4ebc149628161c745))
+
 ## [0.1.1](https://github.com/pmontp19/ha-radarcat/compare/ha-radarcat-v0.1.0...ha-radarcat-v0.1.1) (2026-08-18)
 
 
