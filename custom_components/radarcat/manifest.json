@@ -9,9 +9,6 @@
   "integration_type": "service",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/pmontp19/ha-radarcat/issues",
-  "requirements": [
-    "Pillow>=10.0.0"
-  ],
   "single_config_entry": true,
   "version": "0.1.1"
 }
